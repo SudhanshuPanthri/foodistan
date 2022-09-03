@@ -48,7 +48,7 @@ const LoginScreen = ({navigation}) => {
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
         <TouchableOpacity
           style={styles.loginBtnContainer}
-          onPress={() => navigation.navigate('HomeScreen')}>
+          onPress={() => navigation.navigate('RootClientTabs')}>
           <Text style={{fontSize: 16, fontWeight: '600', color: '#fff'}}>
             Login
           </Text>

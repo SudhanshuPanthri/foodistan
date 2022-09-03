@@ -9,7 +9,9 @@ import {
   ScrollView,
   FlatList,
 } from 'react-native';
-import {categoryData} from '../../data';
+import {categoryData, restaurantData} from '../../data';
+import ItemCard from '../../components/ItemCard';
+import CountDown from 'react-native-countdown-component';
 
 const HomeScreen = () => {
   const [cart, setCart] = useState(0);
@@ -149,6 +151,87 @@ const HomeScreen = () => {
           <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
             Free Delivery Now
           </Text>
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              marginVertical: 10,
+            }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: '600',
+                color: '#000',
+                letterSpacing: 0.4,
+              }}>
+              Options changing in
+            </Text>
+            <CountDown
+              until={3600}
+              size={14}
+              timeToShow={['M', 'S']}
+              timeLabels={{m: '', s: ''}}
+              style={{marginHorizontal: 10}}
+            />
+          </View>
+          <FlatList
+            data={restaurantData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => (
+              <ItemCard
+                name={item.name}
+                image={item.image}
+                totalReviews={item.totalReviews}
+                Address={item.Address}
+                farAway={item.farAway}
+                averageRating={item.averageRating}
+              />
+            )}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+        <View style={styles.categoryWrapper}>
+          <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
+            Offer Zone
+          </Text>
+          <FlatList
+            data={restaurantData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => (
+              <ItemCard
+                name={item.name}
+                image={item.image}
+                totalReviews={item.totalReviews}
+                Address={item.Address}
+                farAway={item.farAway}
+                averageRating={item.averageRating}
+              />
+            )}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+        <View style={styles.categoryWrapper}>
+          <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
+            Top Picks near you
+          </Text>
+          <FlatList
+            data={restaurantData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => (
+              <ItemCard
+                name={item.name}
+                image={item.image}
+                totalReviews={item.totalReviews}
+                Address={item.Address}
+                farAway={item.farAway}
+                averageRating={item.averageRating}
+              />
+            )}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
       </ScrollView>
     </View>
@@ -245,5 +328,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000',
     marginTop: 5,
+  },
+  itemCardContainer: {
+    flexDirection: 'row',
   },
 });

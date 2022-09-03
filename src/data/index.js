@@ -25,3 +25,58 @@ export const categoryData = [
     id: 5,
   },
 ];
+
+export const restaurantData = [
+  {
+    name: 'Mc Donalds',
+    farAway: '21.2',
+    Address: 'Street-2 Mukherjee Nagar',
+    image: require('../assets/mcDonald.png'),
+    averageRating: 4.9,
+    totalReviews: 300,
+    coordinates: {lat: -261888612, long: 28246325},
+    discount: 10,
+    deliveryTime: 20,
+    collectTime: 10,
+    foodType: 'Burgers,Wraps,Milkshakes....',
+    productData: [
+      {
+        name: 'Mc Puff',
+        price: 45,
+        image: '',
+      },
+      {
+        name: 'Mc Chicken',
+        price: 155,
+        image: '',
+      },
+    ],
+    id: 1,
+  },
+  {
+    name: 'Fasos',
+    farAway: '10.2',
+    Address: 'Street-6 Adarsh Nagar',
+    image: require('../assets/fasos.png'),
+    averageRating: 4.8,
+    totalReviews: 400,
+    coordinates: {lat: -261888612, long: 28246325},
+    discount: 15,
+    deliveryTime: 25,
+    collectTime: 10,
+    foodType: 'Burgers,Wraps,Meals....',
+    productData: [
+      {
+        name: 'Veg Special Wrap',
+        price: 145,
+        image: '',
+      },
+      {
+        name: 'Shawarma Roll',
+        price: 255,
+        image: '',
+      },
+    ],
+    id: 2,
+  },
+];
