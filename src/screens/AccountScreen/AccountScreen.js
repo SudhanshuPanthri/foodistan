@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 
-const AccountScreen = () => {
+const AccountScreen = ({navigation}) => {
   return (
-    <View>
+    <TouchableOpacity>
       <Text>Account Screen</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,73 +7,145 @@ import {
   TextInput,
   Pressable,
   TouchableOpacity,
+  Image,
+  ScrollView,
 } from 'react-native';
-import Header from '../../components/Header';
 
 const LoginScreen = ({navigation}) => {
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [passwordFocus, setPasswordFocus] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <View style={styles.parent}>
-      {/*<Header title="Hello, Anonymous" type="back" navigation={navigation} />*/}
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Pressable onPress={() => navigation.goBack()} style={{marginLeft: 10}}>
-          <Text style={styles.back}>Back</Text>
-        </Pressable>
+      <ScrollView>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{alignItems: 'center', flexDirection: 'row'}}>
+            <Pressable
+              onPress={() => navigation.goBack()}
+              style={{marginLeft: 10}}>
+              <Image
+                source={require('../../assets/back.png')}
+                style={{height: 25, width: 25}}
+              />
+            </Pressable>
+            <View style={styles.wrapper}>
+              <Text
+                style={{
+                  fontSize: 30,
+                  fontWeight: 'bold',
+                  color: '#06C167',
+                  letterSpacing: 0.69,
+                }}>
+                Login
+              </Text>
+            </View>
+          </View>
+        </View>
         <View style={styles.wrapper}>
           <Text
             style={{
-              fontSize: 30,
-              fontWeight: 'bold',
-              color: '#06C167',
-              letterSpacing: 0.69,
+              fontSize: 20,
+              fontWeight: '600',
+              color: '#000',
+              letterSpacing: 0.5,
             }}>
-            Login
+            Good to see you back
           </Text>
         </View>
-      </View>
-      <View style={styles.wrapper}>
-        <Text style={{fontSize: 18, fontWeight: '600'}}>
-          Good to see you back
-        </Text>
-      </View>
-      <View style={styles.inputWrapper}>
-        <Text style={{marginVertical: 10, fontSize: 16, color: '#000'}}>
-          Name/Email
-        </Text>
-        <TextInput style={styles.input} />
-        <Text style={{marginVertical: 10, fontSize: 16, color: '#000'}}>
-          Password
-        </Text>
-        <TextInput style={styles.input} />
-      </View>
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.inputWrapper}>
+          <Text
+            style={{
+              marginVertical: 10,
+              fontSize: 16,
+              color: '#000',
+              fontWeight: '600',
+            }}>
+            Email
+          </Text>
+          <TextInput
+            style={{
+              borderWidth: 1,
+              padding: 10,
+              borderRadius: 10,
+              borderColor: emailFocus ? '#06C167' : '#000',
+              width: '100%',
+            }}
+            onFocus={() => {
+              setEmailFocus(true);
+              setPasswordFocus(false);
+            }}
+          />
+          <Text
+            style={{
+              marginVertical: 10,
+              fontSize: 16,
+              color: '#000',
+              fontWeight: '600',
+            }}>
+            Password
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              borderWidth: 1,
+              borderColor: passwordFocus ? '#06C167' : '#000',
+              borderRadius: 10,
+            }}
+            onFocus={() => {
+              setEmailFocus(false);
+              setPasswordFocus(true);
+            }}>
+            <TextInput
+              style={{
+                padding: 10,
+                width: '85%',
+              }}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <Image
+                source={
+                  showPassword
+                    ? require('../../assets/eye.png')
+                    : require('../../assets/eyeclosed.png')
+                }
+                style={{height: 30, width: 30, marginHorizontal: 10}}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity
+            style={styles.loginBtnContainer}
+            onPress={() => navigation.navigate('RootClientTabs')}>
+            <Text style={{fontSize: 16, fontWeight: '600', color: '#fff'}}>
+              Login
+            </Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
-          style={styles.loginBtnContainer}
-          onPress={() => navigation.navigate('RootClientTabs')}>
-          <Text style={{fontSize: 16, fontWeight: '600', color: '#fff'}}>
-            Login
+          style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={{fontSize: 16, textDecorationLine: 'underline'}}>
+            Forgot Password ?
           </Text>
         </TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={{fontSize: 16, textDecorationLine: 'underline'}}>
-          Forgot Password ?
-        </Text>
-      </TouchableOpacity>
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity style={styles.google}>
-          <Text style={{color: '#fff', fontSize: 16, fontWeight: '600'}}>
-            Login with Google{' '}
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity style={styles.facebook}>
-          <Text style={{color: '#fff', fontSize: 16, fontWeight: '600'}}>
-            Login with Facebook{' '}
-          </Text>
-        </TouchableOpacity>
-      </View>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity style={styles.google}>
+            <Text style={{color: '#fff', fontSize: 16, fontWeight: '600'}}>
+              Login with Google{' '}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <TouchableOpacity style={styles.facebook}>
+            <Text style={{color: '#fff', fontSize: 16, fontWeight: '600'}}>
+              Login with Facebook{' '}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
       <View style={styles.footer}>
         <Text style={{color: '#fff', fontSize: 18, marginVertical: 10}}>
           Doesn't have an account ?{' '}
@@ -81,7 +153,7 @@ const LoginScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.navigate('SignupScreen')}>
           <Text
             style={{
-              textDecorationLine: 'underline',
+              // textDecorationLine: 'underline',
               color: '#fff',
               fontSize: 18,
             }}>
@@ -106,11 +178,6 @@ const styles = StyleSheet.create({
   },
   inputWrapper: {
     marginHorizontal: 20,
-  },
-  input: {
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 10,
   },
   loginBtnContainer: {
     marginHorizontal: 20,
@@ -143,7 +210,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   footer: {
-    height: '20%',
+    height: '14%',
     width: '100%',
     backgroundColor: '#000',
     position: 'absolute',

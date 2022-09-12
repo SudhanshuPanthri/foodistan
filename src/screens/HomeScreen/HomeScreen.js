@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,15 +8,43 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
+  TextInput,
 } from 'react-native';
 import {categoryData, restaurantData} from '../../data';
 import ItemCard from '../../components/ItemCard';
 import CountDown from 'react-native-countdown-component';
+import {firebase, firestore} from '../../Firebase/FirebaseConfig';
+import Slider from '../../components/Slider';
+import Geolocation from 'react-native-geolocation-service';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
+  //all states
   const [cart, setCart] = useState(0);
   const [pressed, setPressed] = useState(true);
   const [indexCheck, setIndexCheck] = useState('0');
+  const [active, setActive] = useState(true);
+  const [search, setSearch] = useState('');
+  const [position, setPosition] = useState('');
+
+  // states for food
+
+  const [foodData, setFoodData] = useState([]);
+  const [vegData, setVegData] = useState([]);
+  const [nonVegData, setNonVegData] = useState([]);
+
+  // const foodRef = firebase.firestore().collection('FoodData');
+  const foodRef = firebase.firestore().collection('FoodData');
+  useEffect(() => {
+    foodRef.onSnapshot(snapshot => {
+      setFoodData(snapshot.docs.map(doc => doc.data()));
+    });
+  }, []);
+
+  useEffect(() => {
+    setVegData(foodData.filter(item => item.foodType == 'veg'));
+    setNonVegData(foodData.filter(item => item.foodType == 'non-veg'));
+  }, [foodData]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -58,23 +86,55 @@ const HomeScreen = () => {
           </View>
         </Pressable>
       </View>
-      <View style={styles.btnContainer}>
-        <TouchableOpacity
-          style={pressed ? styles.btn : styles.btn1}
-          onPress={() => setPressed(!pressed)}>
-          <Text
-            style={{color: 'white', fontWeight: '600', letterSpacing: 0.45}}>
-            Delivery
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={pressed ? styles.btn1 : styles.btn}
-          onPress={() => setPressed(!pressed)}>
-          <Text
-            style={{color: 'white', fontWeight: '600', letterSpacing: 0.45}}>
-            Pick-up
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.searchBarContainer}>
+        <View
+          style={{
+            width: '80%',
+            borderWidth: 2,
+            borderColor: 'black',
+            marginVertical: 10,
+            // padding: 10,
+            borderRadius: 14,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../../assets/search.png')}
+            style={{height: 25, width: 25, marginHorizontal: 10}}
+          />
+          <TextInput
+            style={{fontSize: 16}}
+            placeholder="Search Your Favourite Food"
+            placeholderTextColor="black"
+            onChangeText={text => setSearch(text)}
+          />
+        </View>
+        {search !== '' && (
+          <View style={styles.searchOuter}>
+            <FlatList
+              data={foodData}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item}) => {
+                if (
+                  item.foodName.toLowerCase().includes(search.toLowerCase())
+                ) {
+                  return (
+                    <TouchableOpacity style={styles.searchResult}>
+                      <Image
+                        source={require('../../assets/dot.png')}
+                        style={{height: 25, width: 25, marginHorizontal: 10}}
+                      />
+                      <Text style={{color: '#000', fontSize: 16}}>
+                        {item.foodName}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                }
+              }}
+              style={styles.searchInner}
+            />
+          </View>
+        )}
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.searchContainer}>
@@ -86,11 +146,10 @@ const HomeScreen = () => {
               />
             </View>
             <View style={{marginHorizontal: 15}}>
-              <Text>Sant Nagar, Delhi</Text>
+              <Text>Sant Nagar,Delhi</Text>
             </View>
             <View
               style={{
-                backgroundColor: '#FBF8F3',
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderRadius: 10,
@@ -146,6 +205,15 @@ const HomeScreen = () => {
               )}
             />
           </View>
+        </View>
+        <View style={styles.sliderWrapper}>
+          <Slider title="Today's Special" data={foodData} />
+        </View>
+        <View style={styles.sliderWrapper}>
+          <Slider title="Veg Dhamaka" data={vegData} />
+        </View>
+        <View style={styles.sliderWrapper}>
+          <Slider title="Non-Veg Craving" data={nonVegData} />
         </View>
         <View style={styles.categoryWrapper}>
           <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
@@ -234,6 +302,16 @@ const HomeScreen = () => {
           />
         </View>
       </ScrollView>
+      {/*{pressed && (*/}
+      {/*  <TouchableOpacity*/}
+      {/*    style={styles.floatingButton}*/}
+      {/*    onPress={() => navigation.navigate('RestaurantMapScreen')}>*/}
+      {/*    <Image*/}
+      {/*      source={require('../../assets/mappin.png')}*/}
+      {/*      style={{height: 30, width: 30, tintColor: '#06C167'}}*/}
+      {/*    />*/}
+      {/*  </TouchableOpacity>*/}
+      {/*)}*/}
     </View>
   );
 };
@@ -253,6 +331,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  searchBarContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 10,
   },
   btnContainer: {
     padding: 10,
@@ -286,7 +369,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   search: {
-    borderWidth: 2,
+    // borderWidth: 2,
+    backgroundColor: '#E4E5E6',
     padding: 10,
     width: '75%',
     borderRadius: 16,
@@ -331,5 +415,30 @@ const styles = StyleSheet.create({
   },
   itemCardContainer: {
     flexDirection: 'row',
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 30,
+    right: 10,
+    backgroundColor: '#000',
+    height: 60,
+    width: 60,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchResult: {
+    padding: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 300,
+    // height: '10%',
+  },
+  searchOuter: {
+    borderWidth: 1,
+    borderRadius: 14,
+    width: '80%',
+    backgroundColor: '#FBF8F3',
+    height: 150,
   },
 });

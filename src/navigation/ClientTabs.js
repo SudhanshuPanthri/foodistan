@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import SearchScreen from '../screens/SearchScreen/SearchScreen';
 import MyOrderScreen from '../screens/MyOrderScreen/MyOrderScreen';
 import AccountScreen from '../screens/AccountScreen/AccountScreen';
+import FavouriteScreen from '../screens/FavouriteScreen/FavouriteScreen';
 
 const ClientTabs = createBottomTabNavigator();
 
@@ -14,12 +15,12 @@ const RootClientTabs = () => {
       screenOptions={{
         tabBarStyle: {
           position: 'absolute',
-          bottom: 10,
-          left: 10,
-          right: 10,
+          bottom: 0,
           elevation: 0,
           backgroundColor: '#000',
-          borderRadius: 15,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
+          // borderRadius: 15,
           height: 90,
         },
         tabBarShowLabel: false,
@@ -38,6 +39,7 @@ const RootClientTabs = () => {
                   width: 25,
                   height: 25,
                   tintColor: focused ? '#06C167' : '#fff',
+                  marginVertical: 5,
                 }}
               />
               <Text style={{color: focused ? '#06C167' : '#fff'}}>Home</Text>
@@ -58,9 +60,33 @@ const RootClientTabs = () => {
                   width: 25,
                   height: 25,
                   tintColor: focused ? '#06C167' : '#fff',
+                  marginVertical: 5,
                 }}
               />
               <Text style={{color: focused ? '#06C167' : '#fff'}}>Search</Text>
+            </View>
+          ),
+        }}
+      />
+      <ClientTabs.Screen
+        name="FavouriteScreen"
+        component={FavouriteScreen}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Image
+                source={require('../assets/heart.png')}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#06C167' : '#fff',
+                  marginVertical: 5,
+                }}
+              />
+              <Text style={{color: focused ? '#06C167' : '#fff'}}>
+                Favourites
+              </Text>
             </View>
           ),
         }}
@@ -78,6 +104,7 @@ const RootClientTabs = () => {
                   width: 25,
                   height: 25,
                   tintColor: focused ? '#06C167' : '#fff',
+                  marginVertical: 5,
                 }}
               />
               <Text style={{color: focused ? '#06C167' : '#fff'}}>Orders</Text>
@@ -98,6 +125,7 @@ const RootClientTabs = () => {
                   width: 25,
                   height: 25,
                   tintColor: focused ? '#06C167' : '#fff',
+                  marginVertical: 5,
                 }}
               />
               <Text style={{color: focused ? '#06C167' : '#fff'}}>Account</Text>

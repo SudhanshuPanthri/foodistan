@@ -58,6 +58,8 @@ export default ItemCard;
 
 const styles = StyleSheet.create({
   container: {
+    borderWidth: 2,
+    borderColor: '#06C167',
     borderRadius: 20,
     height: 200,
     padding: 10,
