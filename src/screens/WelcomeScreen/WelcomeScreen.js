@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,30 @@ import {
   StatusBar,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
+import {firebase} from '../../Firebase/FirebaseConfig';
+import auth from '@react-native-firebase/auth';
 
 const WelcomeScreen = ({navigation}) => {
+  // state to check if user is logged in or not
+  const [userLogged, setUserLogged] = useState(null);
+
+  // function to check if user exist or not
+
+  const checkUser = () => {
+    auth().onAuthStateChanged(user => {
+      if (user) {
+        setUserLogged(user);
+        navigation.navigate('RootClientTabs');
+      } else {
+        setUserLogged(null);
+      }
+    });
+  };
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />

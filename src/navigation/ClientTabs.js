@@ -12,6 +12,7 @@ const ClientTabs = createBottomTabNavigator();
 const RootClientTabs = () => {
   return (
     <ClientTabs.Navigator
+      initialRouteName="AccountScreen"
       screenOptions={{
         tabBarStyle: {
           position: 'absolute',
