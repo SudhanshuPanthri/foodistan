@@ -11,10 +11,35 @@ import {
   ScrollView,
 } from 'react-native';
 
+import {firebase} from '../../Firebase/FirebaseConfig';
+import auth from '@react-native-firebase/auth';
+
 const LoginScreen = ({navigation}) => {
   const [emailFocus, setEmailFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // user auth hooks
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // login function
+
+  const handleLogin = () => {
+    try {
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(userCredentials => {
+          const user = userCredentials.user;
+          navigation.navigate('RootClientTabs');
+        });
+    } catch (error) {
+      setErrorMessage(error);
+    }
+  };
+
   return (
     <View style={styles.parent}>
       <ScrollView>
@@ -52,6 +77,18 @@ const LoginScreen = ({navigation}) => {
             Good to see you back
           </Text>
         </View>
+        {errorMessage !== '' && (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 5,
+            }}>
+            <Text style={{fontWeight: 'bold', color: 'red'}}>
+              {errorMessage}
+            </Text>
+          </View>
+        )}
         <View style={styles.inputWrapper}>
           <Text
             style={{
@@ -69,11 +106,14 @@ const LoginScreen = ({navigation}) => {
               borderRadius: 10,
               borderColor: emailFocus ? '#06C167' : '#000',
               width: '100%',
+              fontSize: 16,
             }}
             onFocus={() => {
               setEmailFocus(true);
               setPasswordFocus(false);
+              setErrorMessage('');
             }}
+            onChangeText={text => setEmail(text)}
           />
           <Text
             style={{
@@ -96,13 +136,16 @@ const LoginScreen = ({navigation}) => {
             onFocus={() => {
               setEmailFocus(false);
               setPasswordFocus(true);
+              setErrorMessage('');
             }}>
             <TextInput
               style={{
                 padding: 10,
                 width: '85%',
+                fontSize: 16,
               }}
               secureTextEntry={!showPassword}
+              onChangeText={text => setPassword(text)}
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <Image
@@ -119,7 +162,7 @@ const LoginScreen = ({navigation}) => {
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <TouchableOpacity
             style={styles.loginBtnContainer}
-            onPress={() => navigation.navigate('RootClientTabs')}>
+            onPress={handleLogin}>
             <Text style={{fontSize: 16, fontWeight: '600', color: '#fff'}}>
               Login
             </Text>
