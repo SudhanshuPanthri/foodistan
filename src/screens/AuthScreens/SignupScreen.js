@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 import {firebase} from '../../Firebase/FirebaseConfig';
 import auth from '@react-native-firebase/auth';
@@ -33,26 +34,26 @@ const SignupScreen = ({navigation}) => {
 
   // signup function
   const handleSignUp = () => {
-    const userData = {
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    };
-
     if (password !== confirmPassword) {
       alert('Password does not match!');
     }
     try {
       auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          alert('User created successfully');
-          const userRef = firebase.firestore().collection('UserData');
-          userRef
-            .add(userData)
-            .then(() => setSuccessMessage('Account Created :D'))
-            .catch(error => setErrorMessage(error.message));
+        .then(userCredentials => {
+          if (userCredentials?.user.uid) {
+            const userRef = firebase.firestore().collection('UserData');
+            userRef
+              .add({
+                name: name,
+                email: email,
+                password: password,
+                confirmPassword: confirmPassword,
+                uid: userCredentials?.user.uid,
+              })
+              .then(() => setSuccessMessage('Account Created :D'))
+              .catch(error => setErrorMessage(error.message));
+          }
         })
         .catch(error => setErrorMessage('Firebase Error: ' + error.message));
     } catch (error) {
@@ -62,6 +63,7 @@ const SignupScreen = ({navigation}) => {
 
   return (
     <View style={styles.parent}>
+      <StatusBar />
       {successMessage == null ? (
         <View style={styles.parent}>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -124,6 +126,7 @@ const SignupScreen = ({navigation}) => {
               <TextInput
                 style={{
                   borderWidth: 1,
+                  fontSize: 16,
                   padding: 10,
                   borderRadius: 10,
                   borderColor: nameFocus ? '#06C167' : '#000',
@@ -149,6 +152,7 @@ const SignupScreen = ({navigation}) => {
               </Text>
               <TextInput
                 style={{
+                  fontSize: 16,
                   borderWidth: 1,
                   padding: 10,
                   borderRadius: 10,
@@ -192,6 +196,7 @@ const SignupScreen = ({navigation}) => {
                 <TextInput
                   style={{
                     padding: 10,
+                    fontSize: 16,
                     width: '85%',
                   }}
                   secureTextEntry={!showPassword}
@@ -236,6 +241,7 @@ const SignupScreen = ({navigation}) => {
                 }}>
                 <TextInput
                   style={{
+                    fontSize: 16,
                     padding: 10,
                     width: '85%',
                   }}

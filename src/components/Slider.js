@@ -8,7 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-const Slider = ({title, data}) => {
+const Slider = ({title, data, navigation}) => {
+  const openItem = item => {
+    navigation.navigate('ItemDetailScreen', item);
+  };
+
   return (
     <View style={styles.sliderContainer}>
       <View style={styles.headingContainer}>
@@ -23,7 +27,10 @@ const Slider = ({title, data}) => {
         <FlatList
           data={data}
           renderItem={({item}) => (
-            <TouchableOpacity style={styles.cardContainer}>
+            <TouchableOpacity
+              style={styles.cardContainer}
+              key={item.index}
+              onPress={() => openItem(item)}>
               <View style={styles.ratingContainer}>
                 <Text style={{color: '#fff', fontWeight: '600'}}>4.9</Text>
                 <Text style={{color: '#fff', fontWeight: '600'}}>

@@ -3,8 +3,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeScreen from '../screens/WelcomeScreen/WelcomeScreen';
 import LoginScreen from '../screens/AuthScreens/LoginScreen';
 import SignupScreen from '../screens/AuthScreens/SignupScreen';
-import RestaurantMapScreen from '../screens/RestaurantMapScreen/RestaurantMapScreen';
 import RootClientTabs from './ClientTabs';
+import ItemDetailScreen from '../screens/ItemDetailScreen/ItemDetailScreen';
 const AuthStackNavigator = createNativeStackNavigator();
 
 const AuthStack = () => {
@@ -32,8 +32,8 @@ const AuthStack = () => {
         }}
       />
       <AuthStackNavigator.Screen
-        name="RestaurantMapScreen"
-        component={RestaurantMapScreen}
+        name="ItemDetailScreen"
+        component={ItemDetailScreen}
         options={{
           headerShown: false,
         }}

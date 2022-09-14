@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  StatusBar,
 } from 'react-native';
 
 import {firebase} from '../../Firebase/FirebaseConfig';
@@ -42,6 +43,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.parent}>
+      <StatusBar />
       <ScrollView>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View style={{alignItems: 'center', flexDirection: 'row'}}>

@@ -207,13 +207,21 @@ const HomeScreen = ({navigation}) => {
           </View>
         </View>
         <View style={styles.sliderWrapper}>
-          <Slider title="Today's Special" data={foodData} />
+          <Slider
+            title="Today's Special"
+            data={foodData}
+            navigation={navigation}
+          />
         </View>
         <View style={styles.sliderWrapper}>
-          <Slider title="Veg Dhamaka" data={vegData} />
+          <Slider title="Veg Dhamaka" data={vegData} navigation={navigation} />
         </View>
         <View style={styles.sliderWrapper}>
-          <Slider title="Non-Veg Craving" data={nonVegData} />
+          <Slider
+            title="Non-Veg Craving"
+            data={nonVegData}
+            navigation={navigation}
+          />
         </View>
         <View style={styles.categoryWrapper}>
           <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>

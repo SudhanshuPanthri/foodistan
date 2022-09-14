@@ -4,15 +4,16 @@ import {firebase} from '../../Firebase/FirebaseConfig';
 import auth from '@react-native-firebase/auth';
 
 const AccountScreen = ({navigation}) => {
-  const [userLogged, setUserLogged] = useState(null);
+  const [userLoggedUid, setUserLoggedUid] = useState(null);
+  const [userData, setUserData] = useState();
 
   const checkUser = () => {
     auth().onAuthStateChanged(user => {
       if (user) {
-        setUserLogged(user);
+        setUserLoggedUid(user.uid);
         navigation.navigate('RootClientTabs');
       } else {
-        setUserLogged(null);
+        setUserLoggedUid(null);
       }
     });
   };
@@ -23,7 +24,7 @@ const AccountScreen = ({navigation}) => {
     auth()
       .signOut()
       .then(() => {
-        setUserLogged(null);
+        setUserLoggedUid(null);
         navigation.navigate('WelcomeScreen');
         console.log('User Logged Out');
       })
@@ -36,11 +37,31 @@ const AccountScreen = ({navigation}) => {
     checkUser();
   }, []);
 
+  useEffect(() => {
+    const getUserData = async () => {
+      const userRef = firebase
+        .firestore()
+        .collection('UserData')
+        .where('uid', '==', userLoggedUid);
+      const user = await userRef.get();
+      if (!user.empty) {
+        user.forEach(doc => {
+          setUserData(doc.data());
+        });
+      } else {
+        console.log(userData);
+      }
+    };
+    getUserData();
+  }, [userLoggedUid]);
+
+  console.log(userData);
+
   return (
     <View style={styles.parent}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
         <View style={styles.headerCard}>
-          {userLogged && (
+          {userData && (
             <View
               style={{
                 flexDirection: 'row',
@@ -49,10 +70,10 @@ const AccountScreen = ({navigation}) => {
               }}>
               <View style={{width: '70%'}}>
                 <Text style={{fontSize: 18, fontWeight: '600', color: '#000'}}>
-                  Sudhanshu Panthri
+                  {userData.name}
                 </Text>
                 <Text style={{fontSize: 16, color: '#000'}}>
-                  {userLogged.email}
+                  {userData.email}
                 </Text>
               </View>
               <View
@@ -70,10 +91,20 @@ const AccountScreen = ({navigation}) => {
             </View>
           )}
         </View>
+        <View style={styles.infoContainer}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity
+              onPress={() => handleLogout()}
+              style={{
+                borderWidth: 1,
+                padding: 10,
+                marginVertical: 10,
+              }}>
+              <Text style={{fontSize: 18, color: '#000'}}>Log Out</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      <TouchableOpacity onPress={() => handleLogout()}>
-        <Text>Log Out</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -92,8 +123,15 @@ const styles = StyleSheet.create({
     height: 100,
     width: '90%',
     borderRadius: 14,
-    marginVertical: 15,
+    marginVertical: 20,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  infoContainer: {
+    borderWidth: 2,
+    backgroundColor: '#EBF1F1',
+    width: '90%',
+    height: 400,
+    borderRadius: 14,
   },
 });
