@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -8,13 +8,73 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
+import {firebase} from '../../Firebase/FirebaseConfig';
+import auth from '@react-native-firebase/auth';
 
 const ItemDetailScreen = ({navigation, route}) => {
+  const [foodQuantity, setFoodQuantity] = useState('1');
+  const [addOnQuantity, setAddOnQuantity] = useState('0');
+
   const data = route.params;
   if (route.params === undefined) {
     // ya toh ek 404 page not found wala page bhi bana sakta hai but wo bad mein dekhenge
     navigation.navigate('HomeScreen');
   }
+
+  //addtocart function
+
+  const addToCart = () => {
+    const cartRef = firebase
+      .firestore()
+      .collection('UserCart')
+      .doc(auth().currentUser.uid);
+
+    const cartData = {data, addOnQuantity, foodQuantity};
+    cartRef.get().then(doc => {
+      if (doc.exists) {
+        cartRef.update({
+          cart: firebase.firestore.FieldValue.arrayUnion(cartData),
+        });
+      } else {
+        cartRef.set({
+          cart: [cartData],
+        });
+        alert('Added to cart');
+      }
+    });
+  };
+
+  //increase quantity function
+  const increaseQuantity = () => {
+    setFoodQuantity((parseInt(foodQuantity) + 1).toString());
+  };
+
+  const increaseAddOnQuantity = () => {
+    setAddOnQuantity((parseInt(addOnQuantity) + 1).toString());
+  };
+
+  //decrease quantity function
+  const decreaseQuantity = () => {
+    if (parseInt(foodQuantity) > 1) {
+      setFoodQuantity((parseInt(foodQuantity) - 1).toString());
+    }
+  };
+
+  const decreaseAddOnQuantity = () => {
+    if (parseInt(addOnQuantity) > 0) {
+      setAddOnQuantity((parseInt(addOnQuantity) - 1).toString());
+    }
+  };
+
+  //function to calculate total price
+
+  const totalPrice = () => {
+    const price =
+      parseInt(foodQuantity) * data.foodPrice +
+      parseInt(addOnQuantity) * data.foodAddOnPrice;
+    return price;
+  };
+
   return (
     <View style={styles.parent}>
       <View style={styles.header}>
@@ -45,7 +105,7 @@ const ItemDetailScreen = ({navigation, route}) => {
               alignItems: 'center',
             }}>
             <Image
-              source={require('../../assets/pizza1.png')}
+              source={{uri: data.foodImageURL}}
               style={{height: 200, width: 200}}
             />
             <View
@@ -62,34 +122,60 @@ const ItemDetailScreen = ({navigation, route}) => {
           </View>
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              height: 60,
+              // alignItems: 'center',
+              height: 140,
               backgroundColor: '#FFE6E6',
               marginVertical: 5,
             }}>
             <View
               style={{
-                width: '20%',
-                height: '100%',
-                justifyContent: 'center',
+                flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <Image
-                source={require('../../assets/restaurant.png')}
-                style={{height: 40, width: 40, marginLeft: 10}}
-              />
-            </View>
-            <View>
-              <Text
+              <View
                 style={{
-                  fontSize: 16,
-                  color: '#000',
-                  marginHorizontal: 10,
-                  fontWeight: '500',
+                  width: '20%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                {data.restaurantName}, {data.restaurantAddressStreet}
-              </Text>
+                <Image
+                  source={require('../../assets/restaurant.png')}
+                  style={{height: 40, width: 40, marginLeft: 10}}
+                />
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: '#000',
+                    marginHorizontal: 10,
+                    fontWeight: '500',
+                  }}>
+                  {data.restaurantName}, {data.restaurantAddressStreet}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+              }}>
+              <Image
+                source={require('../../assets/info.png')}
+                style={{width: 40, height: 40}}
+              />
+              <View>
+                <Text style={{fontSize: 14, fontWeight: '600', color: '#000'}}>
+                  {data.restaurantEmail}
+                </Text>
+              </View>
+              <View>
+                <Text style={{fontSize: 16, fontWeight: '600', color: '#000'}}>
+                  {data.restaurantNumber}
+                </Text>
+              </View>
             </View>
           </View>
           <View
@@ -187,20 +273,24 @@ const ItemDetailScreen = ({navigation, route}) => {
               backgroundColor: '#FFE6E6',
               marginVertical: 5,
             }}>
-            <View style={{width: '50%'}}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: '600',
-                  marginLeft: 10,
-                  color: '#000',
-                }}>
-                Add Extra
-              </Text>
-              <Text style={{marginLeft: 10, fontSize: 16}}>
-                {data.foodAddOn}
-              </Text>
-            </View>
+            {data.foodAddOn ? (
+              <View style={{width: '50%'}}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: '600',
+                    marginLeft: 10,
+                    color: '#000',
+                  }}>
+                  Add Extra
+                </Text>
+                <Text style={{marginLeft: 10, fontSize: 16}}>
+                  {data.foodAddOn}
+                </Text>
+              </View>
+            ) : (
+              ''
+            )}
             <View
               style={{
                 flexDirection: 'row',
@@ -208,14 +298,16 @@ const ItemDetailScreen = ({navigation, route}) => {
                 justifyContent: 'space-evenly',
                 width: '50%',
               }}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => decreaseAddOnQuantity()}>
                 <Image
                   source={require('../../assets/minus.png')}
                   style={{height: 40, width: 40}}
                 />
               </TouchableOpacity>
-              <Text style={{fontSize: 22, fontWeight: '600'}}>0</Text>
-              <TouchableOpacity>
+              <Text style={{fontSize: 22, fontWeight: '600'}}>
+                {addOnQuantity}
+              </Text>
+              <TouchableOpacity onPress={() => increaseAddOnQuantity()}>
                 <Image
                   source={require('../../assets/plus.png')}
                   style={{height: 40, width: 40}}
@@ -249,14 +341,16 @@ const ItemDetailScreen = ({navigation, route}) => {
                 justifyContent: 'space-evenly',
                 width: '50%',
               }}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => decreaseQuantity()}>
                 <Image
                   source={require('../../assets/minus.png')}
                   style={{height: 40, width: 40}}
                 />
               </TouchableOpacity>
-              <Text style={{fontSize: 22, fontWeight: '600'}}>0</Text>
-              <TouchableOpacity>
+              <Text style={{fontSize: 22, fontWeight: '600'}}>
+                {foodQuantity}
+              </Text>
+              <TouchableOpacity onPress={() => increaseQuantity()}>
                 <Image
                   source={require('../../assets/plus.png')}
                   style={{height: 40, width: 40}}
@@ -278,7 +372,7 @@ const ItemDetailScreen = ({navigation, route}) => {
               Total Price
             </Text>
             <Text style={{fontSize: 20, color: '#000', fontWeight: '600'}}>
-              ₹ 1340
+              Rs. {totalPrice()}
             </Text>
           </View>
           <View
@@ -298,9 +392,10 @@ const ItemDetailScreen = ({navigation, route}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: '#06C167',
-              }}>
+              }}
+              onPress={() => addToCart()}>
               <Text style={{fontSize: 18, fontWeight: '500', color: '#000'}}>
-                Add to Card
+                Add to Cart
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

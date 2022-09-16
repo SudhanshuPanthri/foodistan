@@ -55,8 +55,6 @@ const AccountScreen = ({navigation}) => {
     getUserData();
   }, [userLoggedUid]);
 
-  console.log(userData);
-
   return (
     <View style={styles.parent}>
       <View style={{alignItems: 'center', justifyContent: 'center'}}>
