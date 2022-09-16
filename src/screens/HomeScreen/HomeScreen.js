@@ -65,7 +65,8 @@ const HomeScreen = ({navigation}) => {
             Foodistan
           </Text>
         </View>
-        <Pressable
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CartScreen')}
           style={{marginRight: 10, position: 'relative', flexDirection: 'row'}}>
           <Image
             source={require('../../assets/cart.gif')}
@@ -84,7 +85,7 @@ const HomeScreen = ({navigation}) => {
             }}>
             <Text style={{color: '#fff', fontSize: 12}}>{cart}</Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <View style={styles.searchBarContainer}>
         <View

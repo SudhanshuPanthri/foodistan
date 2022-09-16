@@ -5,6 +5,7 @@ import LoginScreen from '../screens/AuthScreens/LoginScreen';
 import SignupScreen from '../screens/AuthScreens/SignupScreen';
 import RootClientTabs from './ClientTabs';
 import ItemDetailScreen from '../screens/ItemDetailScreen/ItemDetailScreen';
+import CartScreen from '../screens/CartScreen/CartScreen';
 const AuthStackNavigator = createNativeStackNavigator();
 
 const AuthStack = () => {
@@ -34,6 +35,13 @@ const AuthStack = () => {
       <AuthStackNavigator.Screen
         name="ItemDetailScreen"
         component={ItemDetailScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <AuthStackNavigator.Screen
+        name="CartScreen"
+        component={CartScreen}
         options={{
           headerShown: false,
         }}

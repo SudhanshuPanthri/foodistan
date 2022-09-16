@@ -12,7 +12,7 @@ const ClientTabs = createBottomTabNavigator();
 const RootClientTabs = () => {
   return (
     <ClientTabs.Navigator
-      initialRouteName="AccountScreen"
+      initialRouteName="HomeScreen"
       screenOptions={{
         tabBarStyle: {
           position: 'absolute',
@@ -64,7 +64,9 @@ const RootClientTabs = () => {
                   marginVertical: 5,
                 }}
               />
-              <Text style={{color: focused ? '#06C167' : '#fff'}}>Search</Text>
+              <Text style={{color: focused ? '#06C167' : '#fff'}}>
+                Favourites
+              </Text>
             </View>
           ),
         }}
