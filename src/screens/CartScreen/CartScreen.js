@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Image, Pressable, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {firebase} from '../../Firebase/FirebaseConfig';
 import auth from '@react-native-firebase/auth';
 
@@ -22,9 +31,34 @@ const CartScreen = ({navigation}) => {
     });
   };
 
+  const deleteItem = item => {
+    const docRef = firebase
+      .firestore()
+      .collection('UserCart')
+      .doc(auth().currentUser.uid);
+    docRef.update({
+      cart: firebase.firestore.FieldValue.arrayRemove(item),
+    });
+    getCartData();
+  };
+
   useEffect(() => {
     getCartData();
   }, []);
+
+  useEffect(() => {
+    if (cartData != null) {
+      const food = JSON.parse(cartData).cart;
+      let totalFoodPrice = '0';
+      food.map(item => {
+        totalFoodPrice =
+          parseInt(item.data.foodPrice) * parseInt(item.data.foodQuantity) +
+          parseInt(item.data.AddOnPrice) * parseInt(item.data.AddOnQuantity) +
+          parseInt(totalFoodPrice);
+      });
+      console.log(totalFoodPrice);
+    }
+  }, [cartData]);
 
   return (
     <View style={styles.parent}>
@@ -49,7 +83,7 @@ const CartScreen = ({navigation}) => {
           />
         </View>
       ) : (
-        <View>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{padding: 10}}>
             <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
               Your Cart
@@ -70,11 +104,29 @@ const CartScreen = ({navigation}) => {
                         }}>
                         {item.data.foodName}
                       </Text>
+                      <Text>{item.data.restaurantName}</Text>
                     </View>
                     {item.addOnQuantity > 0 && (
-                      <View style={{borderWidth: 1, height: '60%'}}>
-                        <Text>{item.foodQuantity}</Text>
-                        <Text>{item.addOnQuantity}</Text>
+                      <View style={{height: '60%', padding: 10}}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: '#000',
+                            fontWeight: '500',
+                          }}>
+                          Food Quantity : {item.foodQuantity}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: '#000',
+                            fontWeight: '500',
+                          }}>
+                          Addon Quantity : {item.addOnQuantity}
+                        </Text>
+                        <Text style={{fontSize: 16, color: '#000'}}>
+                          (Rs. {item.data.foodAddOnPrice}/each)
+                        </Text>
                       </View>
                     )}
                   </View>
@@ -83,6 +135,21 @@ const CartScreen = ({navigation}) => {
                       source={{uri: item.data.foodImageURL}}
                       style={{height: '100%', width: '100%'}}
                     />
+                    <TouchableOpacity
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        height: 30,
+                        width: 30,
+                        backgroundColor: '#DAEAF1',
+                      }}
+                      onPress={() => deleteItem(item)}>
+                      <Image
+                        source={require('../../assets/delete.png')}
+                        style={{height: '100%', width: '100%'}}
+                      />
+                    </TouchableOpacity>
                     <View
                       style={{
                         position: 'absolute',
@@ -91,14 +158,48 @@ const CartScreen = ({navigation}) => {
                         width: '100%',
                         padding: 10,
                       }}>
-                      <Text>Rs. {item.data.foodPrice}/each</Text>
+                      <Text style={{fontWeight: '600'}}>
+                        Rs. {item.data.foodPrice}/each
+                      </Text>
                     </View>
                   </View>
                 </View>
               )}
             />
           </View>
-        </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'row',
+                width: '80%',
+                marginVertical: 10,
+              }}>
+              <Text style={{fontSize: 22, color: '#000', fontWeight: '600'}}>
+                Total Price
+              </Text>
+              <Text style={{fontSize: 22, color: '#000', fontWeight: '600'}}>
+                Rs. {totalPrice}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                width: 160,
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 10,
+                marginVertical: 20,
+                backgroundColor: '#06C167',
+              }}>
+              <Text style={{fontWeight: '600', fontSize: 18}}>Place Order</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -115,7 +216,7 @@ const styles = StyleSheet.create({
   },
   cartItem: {
     marginVertical: 10,
-    height: 120,
+    height: 140,
     width: '100%',
     flexDirection: 'row',
     backgroundColor: '#FFE6E6',
