@@ -12,7 +12,6 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {firebase} from '../../Firebase/FirebaseConfig';
 import auth from '@react-native-firebase/auth';
 
 const LoginScreen = ({navigation}) => {

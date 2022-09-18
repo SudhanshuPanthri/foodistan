@@ -6,6 +6,7 @@ import SignupScreen from '../screens/AuthScreens/SignupScreen';
 import RootClientTabs from './ClientTabs';
 import ItemDetailScreen from '../screens/ItemDetailScreen/ItemDetailScreen';
 import CartScreen from '../screens/CartScreen/CartScreen';
+import PlaceOrderScreen from '../screens/PlaceOrderScreen/PlaceOrderScreen';
 const AuthStackNavigator = createNativeStackNavigator();
 
 const AuthStack = () => {
@@ -46,6 +47,13 @@ const AuthStack = () => {
           headerShown: false,
         }}
       />
+      {/*<AuthStackNavigator.Screen*/}
+      {/*  name="PlaceOrderScreen"*/}
+      {/*  component={PlaceOrderScreen}*/}
+      {/*  options={{*/}
+      {/*    headerShown: false,*/}
+      {/*  }}*/}
+      {/*/>*/}
       <AuthStackNavigator.Screen
         name="RootClientTabs"
         component={RootClientTabs}

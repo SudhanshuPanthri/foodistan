@@ -16,8 +16,8 @@ const CartScreen = ({navigation}) => {
   const [cartData, setCartData] = useState(null);
   const [totalPrice, setTotalPrice] = useState('0');
 
-  const getCartData = () => {
-    const docRef = firebase
+  const getCartData = async () => {
+    const docRef = await firebase
       .firestore()
       .collection('UserCart')
       .doc(auth().currentUser.uid);
@@ -26,7 +26,6 @@ const CartScreen = ({navigation}) => {
       if (doc.exists) {
         const data = JSON.stringify(doc.data());
         setCartData(data);
-      } else {
       }
     });
   };
@@ -49,14 +48,14 @@ const CartScreen = ({navigation}) => {
   useEffect(() => {
     if (cartData != null) {
       const food = JSON.parse(cartData).cart;
-      let totalFoodPrice = '0';
+      let totalFoodPrice = 0;
       food.map(item => {
         totalFoodPrice =
           parseInt(item.data.foodPrice) * parseInt(item.data.foodQuantity) +
           parseInt(item.data.AddOnPrice) * parseInt(item.data.AddOnQuantity) +
-          parseInt(totalFoodPrice);
+          totalFoodPrice;
       });
-      console.log(totalFoodPrice);
+      setTotalPrice(JSON.stringify(totalFoodPrice));
     }
   }, [cartData]);
 
@@ -195,6 +194,9 @@ const CartScreen = ({navigation}) => {
                 padding: 10,
                 marginVertical: 20,
                 backgroundColor: '#06C167',
+              }}
+              onPress={() => {
+                navigation.navigate('MyOrderScreen', {cartData});
               }}>
               <Text style={{fontWeight: '600', fontSize: 18}}>Place Order</Text>
             </TouchableOpacity>

@@ -13,7 +13,7 @@ const AccountScreen = ({navigation}) => {
         setUserLoggedUid(user.uid);
         navigation.navigate('RootClientTabs');
       } else {
-        setUserLoggedUid(null);
+        console.log('hello');
       }
     });
   };
@@ -26,11 +26,23 @@ const AccountScreen = ({navigation}) => {
       .then(() => {
         setUserLoggedUid(null);
         navigation.navigate('WelcomeScreen');
-        console.log('User Logged Out');
       })
       .catch(error => {
         console.log(error);
       });
+  };
+
+  const getUserData = async () => {
+    const userRef = firebase
+      .firestore()
+      .collection('UserData')
+      .where('uid', '==', userLoggedUid);
+    const user = await userRef.get();
+    if (!user.empty) {
+      user.forEach(doc => {
+        setUserData(doc.data());
+      });
+    }
   };
 
   useEffect(() => {
@@ -38,20 +50,6 @@ const AccountScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    const getUserData = async () => {
-      const userRef = firebase
-        .firestore()
-        .collection('UserData')
-        .where('uid', '==', userLoggedUid);
-      const user = await userRef.get();
-      if (!user.empty) {
-        user.forEach(doc => {
-          setUserData(doc.data());
-        });
-      } else {
-        console.log(userData);
-      }
-    };
     getUserData();
   }, [userLoggedUid]);
 

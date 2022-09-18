@@ -15,7 +15,6 @@ import ItemCard from '../../components/ItemCard';
 import CountDown from 'react-native-countdown-component';
 import {firebase, firestore} from '../../Firebase/FirebaseConfig';
 import Slider from '../../components/Slider';
-import Geolocation from 'react-native-geolocation-service';
 
 const HomeScreen = ({navigation}) => {
   //all states
@@ -24,7 +23,6 @@ const HomeScreen = ({navigation}) => {
   const [indexCheck, setIndexCheck] = useState('0');
   const [active, setActive] = useState(true);
   const [search, setSearch] = useState('');
-  const [position, setPosition] = useState('');
 
   // states for food
 
