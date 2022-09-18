@@ -75,20 +75,26 @@ const MyOrderScreen = ({navigation, route}) => {
       .collection('UserOrders')
       .doc(new Date().getTime().toString());
 
-    userRef.set({
-      orderId: userRef.id,
-      orderData: orderData.cart,
-      orderStaus: 'pending',
-      orderCost: totalCost,
-      orderDate: firebase.firestore.FieldValue.serverTimestamp(),
-      // order address ka sochna hai abhi
-      orderAddress: '',
-      orderUserName: userData.name,
-      orderUserUID: userLoggedUid,
-      orderPayment: 'online',
-      paymentTotal: totalCost,
-    });
-    console.log('payment done');
+    userRef
+      .set({
+        orderId: userRef.id,
+        orderData: orderData.cart,
+        orderStaus: 'pending',
+        orderCost: totalCost,
+        orderDate: firebase.firestore.FieldValue.serverTimestamp(),
+        // order address ka sochna hai abhi
+        orderAddress: '',
+        orderUserName: userData.name,
+        orderUserUID: userLoggedUid,
+        orderPayment: 'online',
+        paymentStatus: 'paid',
+      })
+      .then(() => {
+        navigation.navigate('OrderPlacedScreen');
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
