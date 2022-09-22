@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, StatusBar} from 'react-native';
+import {View, StyleSheet, StatusBar} from 'react-native';
 import {colors} from './src/globals/styles';
 import RootNavigator from './src/navigation/RootNavigator';
 
@@ -8,7 +8,6 @@ const App = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor={colors.buttons} />
       <RootNavigator />
-      {/*<HomeScreen />*/}
     </View>
   );
 };

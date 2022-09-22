@@ -196,7 +196,7 @@ const CartScreen = ({navigation}) => {
                 backgroundColor: '#06C167',
               }}
               onPress={() => {
-                navigation.navigate('MyOrderScreen', {cartData});
+                navigation.navigate('PlaceOrderScreen', {cartData});
               }}>
               <Text style={{fontWeight: '600', fontSize: 18}}>Place Order</Text>
             </TouchableOpacity>

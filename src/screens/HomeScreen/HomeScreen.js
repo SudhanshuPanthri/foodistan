@@ -13,16 +13,22 @@ import {
 import {categoryData, restaurantData} from '../../data';
 import ItemCard from '../../components/ItemCard';
 import CountDown from 'react-native-countdown-component';
-import {firebase, firestore} from '../../Firebase/FirebaseConfig';
+import {firebase} from '../../Firebase/FirebaseConfig';
 import Slider from '../../components/Slider';
+// import Geolocation from '@react-native-community/geolocation';
+// import axios from 'axios';
 
 const HomeScreen = ({navigation}) => {
   //all states
-  const [cart, setCart] = useState(0);
-  const [pressed, setPressed] = useState(true);
+  // const [cart, setCart] = useState(0);
+  // const [pressed, setPressed] = useState(true);
   const [indexCheck, setIndexCheck] = useState('0');
-  const [active, setActive] = useState(true);
+  // const [active, setActive] = useState(true);
   const [search, setSearch] = useState('');
+  // const [position, setPosition] = useState({
+  //   latitude: 0,
+  //   longitude: 0,
+  // });
 
   // states for food
 
@@ -30,7 +36,9 @@ const HomeScreen = ({navigation}) => {
   const [vegData, setVegData] = useState([]);
   const [nonVegData, setNonVegData] = useState([]);
 
-  // const foodRef = firebase.firestore().collection('FoodData');
+  // const API_endpoint = 'http://api.positionstack.com/v1/';
+  // const API_KEY = 'a55b130acb7f4e4696b4db52b441ce85';
+
   const foodRef = firebase.firestore().collection('FoodData');
   useEffect(() => {
     foodRef.onSnapshot(snapshot => {
@@ -38,9 +46,37 @@ const HomeScreen = ({navigation}) => {
     });
   }, []);
 
+  // const apiResponse = async () => {
+  //   await fetch(
+  //     `http://api.positionstack.com/v1/reverse?access_key=${API_KEY}&query=40.7638435,-73.9729691`,
+  //   )
+  //     .then(res => {
+  //       let dat = res.json();
+  //       console.log(dat.data);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   Geolocation.watchPosition(pos => {
+  //     // const coordinates = pos.coords;
+  //     console.log(pos.coords);
+  //     setPosition({
+  //       latitude: pos.coords.latitude,
+  //       longitude: pos.coords.longitude,
+  //     });
+  //   });
+  //   let response = fetch(
+  //     'http://api.positionstack.com/v1/reverse?access_key=a55b130acb7f4e4696b4db52b441ce85&query=37.4219983,-122.084',
+  //   ).then(res => console.log(res.json().data[0]));
+  //   // Geolocation.clearWatch();
+  // }, [position]);
+
   useEffect(() => {
-    setVegData(foodData.filter(item => item.foodType == 'veg'));
-    setNonVegData(foodData.filter(item => item.foodType == 'non-veg'));
+    setVegData(foodData.filter(item => item.foodType === 'veg'));
+    setNonVegData(foodData.filter(item => item.foodType === 'non-veg'));
   }, [foodData]);
 
   return (
@@ -70,19 +106,19 @@ const HomeScreen = ({navigation}) => {
             source={require('../../assets/cart.gif')}
             style={styles.headerIcon}
           />
-          <View
-            style={{
-              height: 20,
-              width: 20,
-              backgroundColor: '#000',
-              justifyContent: 'center',
-              alignItems: 'center',
-              right: 0,
-              bottom: 5,
-              borderRadius: 50,
-            }}>
-            <Text style={{color: '#fff', fontSize: 12}}>{cart}</Text>
-          </View>
+          {/*<View*/}
+          {/*  style={{*/}
+          {/*    height: 20,*/}
+          {/*    width: 20,*/}
+          {/*    backgroundColor: '#000',*/}
+          {/*    justifyContent: 'center',*/}
+          {/*    alignItems: 'center',*/}
+          {/*    right: 0,*/}
+          {/*    bottom: 5,*/}
+          {/*    borderRadius: 50,*/}
+          {/*  }}>*/}
+          {/*  <Text style={{color: '#fff', fontSize: 12}}>{cart}</Text>*/}
+          {/*</View>*/}
         </TouchableOpacity>
       </View>
       <View style={styles.searchBarContainer}>
@@ -97,6 +133,7 @@ const HomeScreen = ({navigation}) => {
             flexDirection: 'row',
             alignItems: 'center',
           }}>
+          {/*<Text>{position}</Text>*/}
           <Image
             source={require('../../assets/search.png')}
             style={{height: 25, width: 25, marginHorizontal: 10}}
@@ -135,7 +172,9 @@ const HomeScreen = ({navigation}) => {
           </View>
         )}
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{marginBottom: 100}}>
         <View style={styles.searchContainer}>
           <TouchableOpacity style={styles.search}>
             <View>
@@ -222,92 +261,92 @@ const HomeScreen = ({navigation}) => {
             navigation={navigation}
           />
         </View>
-        <View style={styles.categoryWrapper}>
-          <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
-            Free Delivery Now
-          </Text>
-          <View
-            style={{
-              alignItems: 'center',
-              flexDirection: 'row',
-              marginVertical: 10,
-            }}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: '600',
-                color: '#000',
-                letterSpacing: 0.4,
-              }}>
-              Options changing in
-            </Text>
-            <CountDown
-              until={3600}
-              size={14}
-              timeToShow={['M', 'S']}
-              timeLabels={{m: '', s: ''}}
-              style={{marginHorizontal: 10}}
-            />
-          </View>
-          <FlatList
-            data={restaurantData}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item}) => (
-              <ItemCard
-                name={item.name}
-                image={item.image}
-                totalReviews={item.totalReviews}
-                Address={item.Address}
-                farAway={item.farAway}
-                averageRating={item.averageRating}
-              />
-            )}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-        <View style={styles.categoryWrapper}>
-          <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
-            Offer Zone
-          </Text>
-          <FlatList
-            data={restaurantData}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item}) => (
-              <ItemCard
-                name={item.name}
-                image={item.image}
-                totalReviews={item.totalReviews}
-                Address={item.Address}
-                farAway={item.farAway}
-                averageRating={item.averageRating}
-              />
-            )}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-        <View style={styles.categoryWrapper}>
-          <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
-            Top Picks near you
-          </Text>
-          <FlatList
-            data={restaurantData}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item}) => (
-              <ItemCard
-                name={item.name}
-                image={item.image}
-                totalReviews={item.totalReviews}
-                Address={item.Address}
-                farAway={item.farAway}
-                averageRating={item.averageRating}
-              />
-            )}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
+        {/*<View style={styles.categoryWrapper}>*/}
+        {/*  <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>*/}
+        {/*    Free Delivery Now*/}
+        {/*  </Text>*/}
+        {/*  <View*/}
+        {/*    style={{*/}
+        {/*      alignItems: 'center',*/}
+        {/*      flexDirection: 'row',*/}
+        {/*      marginVertical: 10,*/}
+        {/*    }}>*/}
+        {/*    <Text*/}
+        {/*      style={{*/}
+        {/*        fontSize: 16,*/}
+        {/*        fontWeight: '600',*/}
+        {/*        color: '#000',*/}
+        {/*        letterSpacing: 0.4,*/}
+        {/*      }}>*/}
+        {/*      Options changing in*/}
+        {/*    </Text>*/}
+        {/*    <CountDown*/}
+        {/*      until={3600}*/}
+        {/*      size={14}*/}
+        {/*      timeToShow={['M', 'S']}*/}
+        {/*      timeLabels={{m: '', s: ''}}*/}
+        {/*      style={{marginHorizontal: 10}}*/}
+        {/*    />*/}
+        {/*  </View>*/}
+        {/*  <FlatList*/}
+        {/*    data={restaurantData}*/}
+        {/*    keyExtractor={(item, index) => index.toString()}*/}
+        {/*    renderItem={({item}) => (*/}
+        {/*      <ItemCard*/}
+        {/*        name={item.name}*/}
+        {/*        image={item.image}*/}
+        {/*        totalReviews={item.totalReviews}*/}
+        {/*        Address={item.Address}*/}
+        {/*        farAway={item.farAway}*/}
+        {/*        averageRating={item.averageRating}*/}
+        {/*      />*/}
+        {/*    )}*/}
+        {/*    horizontal={true}*/}
+        {/*    showsHorizontalScrollIndicator={false}*/}
+        {/*  />*/}
+        {/*</View>*/}
+        {/*<View style={styles.categoryWrapper}>*/}
+        {/*  <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>*/}
+        {/*    Offer Zone*/}
+        {/*  </Text>*/}
+        {/*  <FlatList*/}
+        {/*    data={restaurantData}*/}
+        {/*    keyExtractor={(item, index) => index.toString()}*/}
+        {/*    renderItem={({item}) => (*/}
+        {/*      <ItemCard*/}
+        {/*        name={item.name}*/}
+        {/*        image={item.image}*/}
+        {/*        totalReviews={item.totalReviews}*/}
+        {/*        Address={item.Address}*/}
+        {/*        farAway={item.farAway}*/}
+        {/*        averageRating={item.averageRating}*/}
+        {/*      />*/}
+        {/*    )}*/}
+        {/*    horizontal={true}*/}
+        {/*    showsHorizontalScrollIndicator={false}*/}
+        {/*  />*/}
+        {/*</View>*/}
+        {/*<View style={styles.categoryWrapper}>*/}
+        {/*  <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>*/}
+        {/*    Top Picks near you*/}
+        {/*  </Text>*/}
+        {/*  <FlatList*/}
+        {/*    data={restaurantData}*/}
+        {/*    keyExtractor={(item, index) => index.toString()}*/}
+        {/*    renderItem={({item}) => (*/}
+        {/*      <ItemCard*/}
+        {/*        name={item.name}*/}
+        {/*        image={item.image}*/}
+        {/*        totalReviews={item.totalReviews}*/}
+        {/*        Address={item.Address}*/}
+        {/*        farAway={item.farAway}*/}
+        {/*        averageRating={item.averageRating}*/}
+        {/*      />*/}
+        {/*    )}*/}
+        {/*    horizontal={true}*/}
+        {/*    showsHorizontalScrollIndicator={false}*/}
+        {/*  />*/}
+        {/*</View>*/}
       </ScrollView>
       {/*{pressed && (*/}
       {/*  <TouchableOpacity*/}

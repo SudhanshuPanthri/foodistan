@@ -64,9 +64,7 @@ const RootClientTabs = () => {
                   marginVertical: 5,
                 }}
               />
-              <Text style={{color: focused ? '#06C167' : '#fff'}}>
-                Favourites
-              </Text>
+              <Text style={{color: focused ? '#06C167' : '#fff'}}>Search</Text>
             </View>
           ),
         }}
