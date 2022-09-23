@@ -10,9 +10,7 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import {categoryData, restaurantData} from '../../data';
-import ItemCard from '../../components/ItemCard';
-import CountDown from 'react-native-countdown-component';
+import {categoryData} from '../../data';
 import {firebase} from '../../Firebase/FirebaseConfig';
 import Slider from '../../components/Slider';
 // import Geolocation from '@react-native-community/geolocation';
@@ -25,19 +23,10 @@ const HomeScreen = ({navigation}) => {
   const [indexCheck, setIndexCheck] = useState('0');
   // const [active, setActive] = useState(true);
   const [search, setSearch] = useState('');
-  // const [position, setPosition] = useState({
-  //   latitude: 0,
-  //   longitude: 0,
-  // });
-
-  // states for food
 
   const [foodData, setFoodData] = useState([]);
   const [vegData, setVegData] = useState([]);
   const [nonVegData, setNonVegData] = useState([]);
-
-  // const API_endpoint = 'http://api.positionstack.com/v1/';
-  // const API_KEY = 'a55b130acb7f4e4696b4db52b441ce85';
 
   const foodRef = firebase.firestore().collection('FoodData');
   useEffect(() => {
@@ -45,34 +34,6 @@ const HomeScreen = ({navigation}) => {
       setFoodData(snapshot.docs.map(doc => doc.data()));
     });
   }, []);
-
-  // const apiResponse = async () => {
-  //   await fetch(
-  //     `http://api.positionstack.com/v1/reverse?access_key=${API_KEY}&query=40.7638435,-73.9729691`,
-  //   )
-  //     .then(res => {
-  //       let dat = res.json();
-  //       console.log(dat.data);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   Geolocation.watchPosition(pos => {
-  //     // const coordinates = pos.coords;
-  //     console.log(pos.coords);
-  //     setPosition({
-  //       latitude: pos.coords.latitude,
-  //       longitude: pos.coords.longitude,
-  //     });
-  //   });
-  //   let response = fetch(
-  //     'http://api.positionstack.com/v1/reverse?access_key=a55b130acb7f4e4696b4db52b441ce85&query=37.4219983,-122.084',
-  //   ).then(res => console.log(res.json().data[0]));
-  //   // Geolocation.clearWatch();
-  // }, [position]);
 
   useEffect(() => {
     setVegData(foodData.filter(item => item.foodType === 'veg'));
@@ -175,42 +136,42 @@ const HomeScreen = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 100}}>
-        <View style={styles.searchContainer}>
-          <TouchableOpacity style={styles.search}>
-            <View>
-              <Image
-                source={require('../../assets/location.png')}
-                style={{height: 30, width: 30}}
-              />
-            </View>
-            <View style={{marginHorizontal: 15}}>
-              <Text>Sant Nagar,Delhi</Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderRadius: 10,
-                padding: 4,
-              }}>
-              <View>
-                <Image
-                  source={require('../../assets/clock.png')}
-                  style={{height: 30, width: 30}}
-                />
-              </View>
-              <View style={{marginHorizontal: 10}}>
-                <Text>Now</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{marginLeft: 20}}>
-            <Image
-              source={require('../../assets/filter.png')}
-              style={{height: 40, width: 40}}
-            />
-          </TouchableOpacity>
-        </View>
+        {/*<View style={styles.searchContainer}>*/}
+        {/*  <TouchableOpacity style={styles.search}>*/}
+        {/*    <View>*/}
+        {/*      <Image*/}
+        {/*        source={require('../../assets/location.png')}*/}
+        {/*        style={{height: 30, width: 30}}*/}
+        {/*      />*/}
+        {/*    </View>*/}
+        {/*    <View style={{marginHorizontal: 15}}>*/}
+        {/*      <Text>Sant Nagar,Delhi</Text>*/}
+        {/*    </View>*/}
+        {/*    <View*/}
+        {/*      style={{*/}
+        {/*        flexDirection: 'row',*/}
+        {/*        alignItems: 'center',*/}
+        {/*        borderRadius: 10,*/}
+        {/*        padding: 4,*/}
+        {/*      }}>*/}
+        {/*      <View>*/}
+        {/*        <Image*/}
+        {/*          source={require('../../assets/clock.png')}*/}
+        {/*          style={{height: 30, width: 30}}*/}
+        {/*        />*/}
+        {/*      </View>*/}
+        {/*      <View style={{marginHorizontal: 10}}>*/}
+        {/*        <Text>Now</Text>*/}
+        {/*      </View>*/}
+        {/*    </View>*/}
+        {/*  </TouchableOpacity>*/}
+        {/*  <TouchableOpacity style={{marginLeft: 20}}>*/}
+        {/*    <Image*/}
+        {/*      source={require('../../assets/filter.png')}*/}
+        {/*      style={{height: 40, width: 40}}*/}
+        {/*    />*/}
+        {/*  </TouchableOpacity>*/}
+        {/*</View>*/}
         <View style={styles.categoryWrapper}>
           <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
             Categories

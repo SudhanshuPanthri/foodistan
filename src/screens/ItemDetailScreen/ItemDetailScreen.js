@@ -398,21 +398,21 @@ const ItemDetailScreen = ({navigation, route}) => {
                 Add to Cart
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                padding: 10,
-                height: 50,
-                width: 150,
-                // borderWidth: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#06C167',
-              }}>
-              <Text style={{fontSize: 18, fontWeight: '500', color: '#000'}}>
-                Buy Now
-              </Text>
-            </TouchableOpacity>
+            {/*<TouchableOpacity*/}
+            {/*  style={{*/}
+            {/*    marginHorizontal: 10,*/}
+            {/*    padding: 10,*/}
+            {/*    height: 50,*/}
+            {/*    width: 150,*/}
+            {/*    // borderWidth: 1,*/}
+            {/*    justifyContent: 'center',*/}
+            {/*    alignItems: 'center',*/}
+            {/*    backgroundColor: '#06C167',*/}
+            {/*  }}>*/}
+            {/*  <Text style={{fontSize: 18, fontWeight: '500', color: '#000'}}>*/}
+            {/*    Buy Now*/}
+            {/*  </Text>*/}
+            {/*</TouchableOpacity>*/}
           </View>
         </View>
       </ScrollView>
@@ -425,6 +425,7 @@ export default ItemDetailScreen;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   header: {
     justifyContent: 'space-between',
