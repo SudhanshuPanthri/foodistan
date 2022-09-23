@@ -259,6 +259,15 @@ const SignupScreen = ({navigation}) => {
                     style={{height: 30, width: 30, marginHorizontal: 10}}
                   />
                 </TouchableOpacity>
+                <TextInput
+                  style={{
+                    fontSize: 16,
+                    padding: 10,
+                    width: '85%',
+                  }}
+                  secureTextEntry={!showConfirmPassword}
+                  onChangeText={text => setConfirmPassword(text)}
+                />
               </View>
               <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 <TouchableOpacity
@@ -340,6 +349,7 @@ export default SignupScreen;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   footer: {
     height: '14%',

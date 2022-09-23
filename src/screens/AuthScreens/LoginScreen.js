@@ -176,14 +176,18 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </TouchableOpacity>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity style={styles.google}>
+          <TouchableOpacity
+            style={styles.google}
+            onPress={() => alert('functionality yet to come')}>
             <Text style={{color: '#fff', fontSize: 16, fontWeight: '600'}}>
-              Login with Google{' '}
+              Login with Google
             </Text>
           </TouchableOpacity>
         </View>
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <TouchableOpacity style={styles.facebook}>
+          <TouchableOpacity
+            style={styles.facebook}
+            onPress={() => alert('functionality yet to come')}>
             <Text style={{color: '#fff', fontSize: 16, fontWeight: '600'}}>
               Login with Facebook{' '}
             </Text>

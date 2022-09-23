@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   headerCard: {
-    borderWidth: 2,
     backgroundColor: '#EBF1F1',
     padding: 10,
     height: 100,
@@ -124,7 +123,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   infoContainer: {
-    borderWidth: 2,
     backgroundColor: '#EBF1F1',
     width: '90%',
     height: 400,

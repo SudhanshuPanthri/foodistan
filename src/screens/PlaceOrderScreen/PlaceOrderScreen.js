@@ -23,7 +23,6 @@ const PlaceOrderScreen = ({navigation, route}) => {
     auth().onAuthStateChanged(user => {
       if (user) {
         setUserLoggedUid(user.uid);
-        // navigation.navigate('RootClientTabs');
       } else {
         console.log('hello');
       }
@@ -82,8 +81,7 @@ const PlaceOrderScreen = ({navigation, route}) => {
         orderStaus: 'pending',
         orderCost: totalCost,
         orderDate: firebase.firestore.FieldValue.serverTimestamp(),
-        // order address ka sochna hai abhi
-        orderAddress: '',
+        orderAddress: 'Delhi',
         orderUserName: userData.name,
         orderUserUID: userLoggedUid,
         orderPayment: 'online',
