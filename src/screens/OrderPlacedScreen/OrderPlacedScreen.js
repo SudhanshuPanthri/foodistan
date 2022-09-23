@@ -3,8 +3,14 @@ import {View, Text, Image, TouchableOpacity} from 'react-native';
 
 const OrderPlacedScreen = ({navigation}) => {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{fontWeight: '600', fontSize: 24}}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+      }}>
+      <Text style={{fontWeight: '600', fontSize: 24, color: '#000'}}>
         Woo hoo! Order Placed
       </Text>
       <Image

@@ -187,6 +187,7 @@ export default PlaceOrderScreen;
 const styles = StyleSheet.create({
   parent: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   header: {
     marginVertical: 20,

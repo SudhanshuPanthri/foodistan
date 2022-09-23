@@ -37,9 +37,20 @@ const Slider = ({title, data, navigation}) => {
                   240 reviews
                 </Text>
               </View>
+              <View
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  zIndex: 20,
+                  top: 100,
+                  padding: 10,
+                  backgroundColor: '#937DC2',
+                }}>
+                <Text style={{color: '#fff'}}>{item.restaurantName}</Text>
+              </View>
               <Image
                 source={{uri: item.foodImageURL}}
-                style={{height: '65%', width: '100%'}}
+                style={{height: '65%', width: '45%'}}
               />
               <View
                 style={{

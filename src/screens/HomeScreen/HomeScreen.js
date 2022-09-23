@@ -13,13 +13,9 @@ import {
 import {categoryData} from '../../data';
 import {firebase} from '../../Firebase/FirebaseConfig';
 import Slider from '../../components/Slider';
-// import Geolocation from '@react-native-community/geolocation';
-// import axios from 'axios';
 
 const HomeScreen = ({navigation}) => {
   //all states
-  // const [cart, setCart] = useState(0);
-  // const [pressed, setPressed] = useState(true);
   const [indexCheck, setIndexCheck] = useState('0');
   // const [active, setActive] = useState(true);
   const [search, setSearch] = useState('');
@@ -67,19 +63,6 @@ const HomeScreen = ({navigation}) => {
             source={require('../../assets/cart.gif')}
             style={styles.headerIcon}
           />
-          {/*<View*/}
-          {/*  style={{*/}
-          {/*    height: 20,*/}
-          {/*    width: 20,*/}
-          {/*    backgroundColor: '#000',*/}
-          {/*    justifyContent: 'center',*/}
-          {/*    alignItems: 'center',*/}
-          {/*    right: 0,*/}
-          {/*    bottom: 5,*/}
-          {/*    borderRadius: 50,*/}
-          {/*  }}>*/}
-          {/*  <Text style={{color: '#fff', fontSize: 12}}>{cart}</Text>*/}
-          {/*</View>*/}
         </TouchableOpacity>
       </View>
       <View style={styles.searchBarContainer}>
@@ -89,12 +72,10 @@ const HomeScreen = ({navigation}) => {
             borderWidth: 2,
             borderColor: 'black',
             marginVertical: 10,
-            // padding: 10,
             borderRadius: 14,
             flexDirection: 'row',
             alignItems: 'center',
           }}>
-          {/*<Text>{position}</Text>*/}
           <Image
             source={require('../../assets/search.png')}
             style={{height: 25, width: 25, marginHorizontal: 10}}
@@ -136,69 +117,34 @@ const HomeScreen = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 100}}>
-        {/*<View style={styles.searchContainer}>*/}
-        {/*  <TouchableOpacity style={styles.search}>*/}
-        {/*    <View>*/}
-        {/*      <Image*/}
-        {/*        source={require('../../assets/location.png')}*/}
-        {/*        style={{height: 30, width: 30}}*/}
-        {/*      />*/}
-        {/*    </View>*/}
-        {/*    <View style={{marginHorizontal: 15}}>*/}
-        {/*      <Text>Sant Nagar,Delhi</Text>*/}
-        {/*    </View>*/}
-        {/*    <View*/}
-        {/*      style={{*/}
-        {/*        flexDirection: 'row',*/}
-        {/*        alignItems: 'center',*/}
-        {/*        borderRadius: 10,*/}
-        {/*        padding: 4,*/}
-        {/*      }}>*/}
-        {/*      <View>*/}
-        {/*        <Image*/}
-        {/*          source={require('../../assets/clock.png')}*/}
-        {/*          style={{height: 30, width: 30}}*/}
-        {/*        />*/}
-        {/*      </View>*/}
-        {/*      <View style={{marginHorizontal: 10}}>*/}
-        {/*        <Text>Now</Text>*/}
-        {/*      </View>*/}
-        {/*    </View>*/}
-        {/*  </TouchableOpacity>*/}
-        {/*  <TouchableOpacity style={{marginLeft: 20}}>*/}
-        {/*    <Image*/}
-        {/*      source={require('../../assets/filter.png')}*/}
-        {/*      style={{height: 40, width: 40}}*/}
-        {/*    />*/}
-        {/*  </TouchableOpacity>*/}
-        {/*</View>*/}
         <View style={styles.categoryWrapper}>
           <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>
             Categories
           </Text>
           <View style={styles.cardWrapper}>
             <FlatList
-              data={categoryData}
+              data={foodData}
               keyExtractor={item => item.id}
               extraData={indexCheck}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               renderItem={({item, index}) => (
                 <TouchableOpacity
-                  onPress={() => setIndexCheck(item.id)}
+                  onPress={() => setIndexCheck(index)}
                   style={
-                    indexCheck === item.id
+                    indexCheck === index
                       ? styles.categoryCard
                       : styles.categoryCardSelected
                   }>
-                  <Image source={item.image} style={{height: 60, width: 60}} />
+                  <Image
+                    source={require('../../assets/foodss.png')}
+                    style={{height: 60, width: 60}}
+                  />
                   <Text
                     style={
-                      indexCheck === item.id
-                        ? styles.cardText
-                        : styles.cardText1
+                      indexCheck === index ? styles.cardText : styles.cardText1
                     }>
-                    {item.name}
+                    {item.foodCategory}
                   </Text>
                 </TouchableOpacity>
               )}
@@ -222,103 +168,7 @@ const HomeScreen = ({navigation}) => {
             navigation={navigation}
           />
         </View>
-        {/*<View style={styles.categoryWrapper}>*/}
-        {/*  <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>*/}
-        {/*    Free Delivery Now*/}
-        {/*  </Text>*/}
-        {/*  <View*/}
-        {/*    style={{*/}
-        {/*      alignItems: 'center',*/}
-        {/*      flexDirection: 'row',*/}
-        {/*      marginVertical: 10,*/}
-        {/*    }}>*/}
-        {/*    <Text*/}
-        {/*      style={{*/}
-        {/*        fontSize: 16,*/}
-        {/*        fontWeight: '600',*/}
-        {/*        color: '#000',*/}
-        {/*        letterSpacing: 0.4,*/}
-        {/*      }}>*/}
-        {/*      Options changing in*/}
-        {/*    </Text>*/}
-        {/*    <CountDown*/}
-        {/*      until={3600}*/}
-        {/*      size={14}*/}
-        {/*      timeToShow={['M', 'S']}*/}
-        {/*      timeLabels={{m: '', s: ''}}*/}
-        {/*      style={{marginHorizontal: 10}}*/}
-        {/*    />*/}
-        {/*  </View>*/}
-        {/*  <FlatList*/}
-        {/*    data={restaurantData}*/}
-        {/*    keyExtractor={(item, index) => index.toString()}*/}
-        {/*    renderItem={({item}) => (*/}
-        {/*      <ItemCard*/}
-        {/*        name={item.name}*/}
-        {/*        image={item.image}*/}
-        {/*        totalReviews={item.totalReviews}*/}
-        {/*        Address={item.Address}*/}
-        {/*        farAway={item.farAway}*/}
-        {/*        averageRating={item.averageRating}*/}
-        {/*      />*/}
-        {/*    )}*/}
-        {/*    horizontal={true}*/}
-        {/*    showsHorizontalScrollIndicator={false}*/}
-        {/*  />*/}
-        {/*</View>*/}
-        {/*<View style={styles.categoryWrapper}>*/}
-        {/*  <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>*/}
-        {/*    Offer Zone*/}
-        {/*  </Text>*/}
-        {/*  <FlatList*/}
-        {/*    data={restaurantData}*/}
-        {/*    keyExtractor={(item, index) => index.toString()}*/}
-        {/*    renderItem={({item}) => (*/}
-        {/*      <ItemCard*/}
-        {/*        name={item.name}*/}
-        {/*        image={item.image}*/}
-        {/*        totalReviews={item.totalReviews}*/}
-        {/*        Address={item.Address}*/}
-        {/*        farAway={item.farAway}*/}
-        {/*        averageRating={item.averageRating}*/}
-        {/*      />*/}
-        {/*    )}*/}
-        {/*    horizontal={true}*/}
-        {/*    showsHorizontalScrollIndicator={false}*/}
-        {/*  />*/}
-        {/*</View>*/}
-        {/*<View style={styles.categoryWrapper}>*/}
-        {/*  <Text style={{fontSize: 24, fontWeight: '600', color: '#000'}}>*/}
-        {/*    Top Picks near you*/}
-        {/*  </Text>*/}
-        {/*  <FlatList*/}
-        {/*    data={restaurantData}*/}
-        {/*    keyExtractor={(item, index) => index.toString()}*/}
-        {/*    renderItem={({item}) => (*/}
-        {/*      <ItemCard*/}
-        {/*        name={item.name}*/}
-        {/*        image={item.image}*/}
-        {/*        totalReviews={item.totalReviews}*/}
-        {/*        Address={item.Address}*/}
-        {/*        farAway={item.farAway}*/}
-        {/*        averageRating={item.averageRating}*/}
-        {/*      />*/}
-        {/*    )}*/}
-        {/*    horizontal={true}*/}
-        {/*    showsHorizontalScrollIndicator={false}*/}
-        {/*  />*/}
-        {/*</View>*/}
       </ScrollView>
-      {/*{pressed && (*/}
-      {/*  <TouchableOpacity*/}
-      {/*    style={styles.floatingButton}*/}
-      {/*    onPress={() => navigation.navigate('RestaurantMapScreen')}>*/}
-      {/*    <Image*/}
-      {/*      source={require('../../assets/mappin.png')}*/}
-      {/*      style={{height: 30, width: 30, tintColor: '#06C167'}}*/}
-      {/*    />*/}
-      {/*  </TouchableOpacity>*/}
-      {/*)}*/}
     </View>
   );
 };
@@ -414,11 +264,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
     marginTop: 5,
+    textTransform: 'capitalize',
   },
   cardText1: {
     fontWeight: '600',
     color: '#000',
     marginTop: 5,
+    textTransform: 'capitalize',
   },
   itemCardContainer: {
     flexDirection: 'row',

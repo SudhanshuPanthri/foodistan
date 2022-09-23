@@ -69,29 +69,29 @@ const RootClientTabs = () => {
       {/*    ),*/}
       {/*  }}*/}
       {/*/>*/}
-      {/*<ClientTabs.Screen*/}
-      {/*  name="FavouriteScreen"*/}
-      {/*  component={FavouriteScreen}*/}
-      {/*  options={{*/}
-      {/*    tabBarIcon: ({focused}) => (*/}
-      {/*      <View style={{justifyContent: 'center', alignItems: 'center'}}>*/}
-      {/*        <Image*/}
-      {/*          source={require('../assets/heart.png')}*/}
-      {/*          resizeMode="contain"*/}
-      {/*          style={{*/}
-      {/*            width: 25,*/}
-      {/*            height: 25,*/}
-      {/*            tintColor: focused ? '#06C167' : '#fff',*/}
-      {/*            marginVertical: 5,*/}
-      {/*          }}*/}
-      {/*        />*/}
-      {/*        <Text style={{color: focused ? '#06C167' : '#fff'}}>*/}
-      {/*          Favourites*/}
-      {/*        </Text>*/}
-      {/*      </View>*/}
-      {/*    ),*/}
-      {/*  }}*/}
-      {/*/>*/}
+      <ClientTabs.Screen
+        name="FavouriteScreen"
+        component={FavouriteScreen}
+        options={{
+          tabBarIcon: ({focused}) => (
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Image
+                source={require('../assets/heart.png')}
+                resizeMode="contain"
+                style={{
+                  width: 25,
+                  height: 25,
+                  tintColor: focused ? '#06C167' : '#fff',
+                  marginVertical: 5,
+                }}
+              />
+              <Text style={{color: focused ? '#06C167' : '#fff'}}>
+                Favourites
+              </Text>
+            </View>
+          ),
+        }}
+      />
       <ClientTabs.Screen
         name="MyOrderScreen"
         component={MyOrderScreen}

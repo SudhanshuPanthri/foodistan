@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import auth from '@react-native-firebase/auth';
 const ItemDetailScreen = ({navigation, route}) => {
   const [foodQuantity, setFoodQuantity] = useState('1');
   const [addOnQuantity, setAddOnQuantity] = useState('0');
+  const [favFood, setFavFood] = useState([]);
 
   const data = route.params;
   if (route.params === undefined) {
@@ -39,10 +40,49 @@ const ItemDetailScreen = ({navigation, route}) => {
         cartRef.set({
           cart: [cartData],
         });
-        alert('Added to cart');
       }
     });
   };
+
+  //favourites function
+
+  const addFavourite = () => {
+    const favRef = firebase
+      .firestore()
+      .collection('Favourites')
+      .doc(auth().currentUser.uid);
+
+    const favFoodData = {data};
+    favRef.get().then(doc => {
+      if (doc.exists) {
+        favRef.update({
+          fav: firebase.firestore.FieldValue.arrayUnion(favFoodData),
+        });
+      } else {
+        favRef.set({
+          fav: [favFoodData],
+        });
+      }
+    });
+  };
+
+  const getFavData = async () => {
+    const docRef = await firebase
+      .firestore()
+      .collection('Favourites')
+      .doc(auth().currentUser.uid);
+
+    docRef.get().then(doc => {
+      if (doc.exists) {
+        const dataFav = JSON.stringify(doc.data());
+        setFavFood(dataFav);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getFavData();
+  }, [favFood]);
 
   //increase quantity function
   const increaseQuantity = () => {
@@ -84,12 +124,19 @@ const ItemDetailScreen = ({navigation, route}) => {
             style={{height: 25, width: 25}}
           />
         </Pressable>
-        <Pressable>
-          <Image
-            source={require('../../assets/heart.png')}
-            style={{height: 25, width: 25, marginHorizontal: 10}}
-          />
-        </Pressable>
+        <TouchableOpacity onPress={() => addFavourite()}>
+          {favFood.includes(data.foodName) ? (
+            <Image
+              source={require('../../assets/heart.png')}
+              style={{height: 25, width: 25, marginHorizontal: 10}}
+            />
+          ) : (
+            <Image
+              source={require('../../assets/heart-unfilled.png')}
+              style={{height: 25, width: 25, marginHorizontal: 10}}
+            />
+          )}
+        </TouchableOpacity>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{padding: 10}}>
@@ -388,7 +435,6 @@ const ItemDetailScreen = ({navigation, route}) => {
                 padding: 10,
                 height: 50,
                 width: 150,
-                // borderWidth: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: '#06C167',
@@ -398,21 +444,6 @@ const ItemDetailScreen = ({navigation, route}) => {
                 Add to Cart
               </Text>
             </TouchableOpacity>
-            {/*<TouchableOpacity*/}
-            {/*  style={{*/}
-            {/*    marginHorizontal: 10,*/}
-            {/*    padding: 10,*/}
-            {/*    height: 50,*/}
-            {/*    width: 150,*/}
-            {/*    // borderWidth: 1,*/}
-            {/*    justifyContent: 'center',*/}
-            {/*    alignItems: 'center',*/}
-            {/*    backgroundColor: '#06C167',*/}
-            {/*  }}>*/}
-            {/*  <Text style={{fontSize: 18, fontWeight: '500', color: '#000'}}>*/}
-            {/*    Buy Now*/}
-            {/*  </Text>*/}
-            {/*</TouchableOpacity>*/}
           </View>
         </View>
       </ScrollView>
