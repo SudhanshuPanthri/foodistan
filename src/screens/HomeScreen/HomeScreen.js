@@ -168,6 +168,18 @@ const HomeScreen = ({navigation}) => {
                       style={{height: 60, width: 60}}
                     />
                   )}
+                  {item.foodCategory === 'italian' && (
+                    <Image
+                      source={require('../../assets/pizza1.png')}
+                      style={{height: 60, width: 60}}
+                    />
+                  )}
+                  {item.foodCategory === 'mexican' && (
+                    <Image
+                      source={require('../../assets/fasos.png')}
+                      style={{height: 60, width: 60}}
+                    />
+                  )}
                   <Text
                     style={
                       indexCheck === index ? styles.cardText : styles.cardText1
