@@ -15,7 +15,7 @@ import auth from '@react-native-firebase/auth';
 const PlaceOrderScreen = ({navigation, route}) => {
   const {cartData} = route.params;
   const [orderData, setOrderData] = useState([]);
-  const [totalCost, setTotalCost] = useState('0');
+  const [totalCost, setTotalCost] = useState(0);
   const [userLoggedUid, setUserLoggedUid] = useState(null);
   const [userData, setUserData] = useState();
 
@@ -59,12 +59,11 @@ const PlaceOrderScreen = ({navigation, route}) => {
       const food = JSON.parse(cartData).cart;
       let totalFoodPrice = 0;
       food.map(item => {
-        totalFoodPrice =
-          parseInt(item.data.foodPrice) * parseInt(item.data.foodQuantity) +
-          parseInt(item.data.AddOnPrice) * parseInt(item.data.AddOnQuantity) +
-          totalFoodPrice;
+        totalFoodPrice +=
+          item.data.foodPrice * item.foodQuantity +
+          item.addOnQuantity * item.data.foodAddOnPrice;
       });
-      setTotalCost(JSON.stringify(totalFoodPrice));
+      setTotalCost(totalFoodPrice);
     }
   }, [cartData]);
 

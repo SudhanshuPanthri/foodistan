@@ -10,16 +10,14 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import {categoryData} from '../../data';
 import {firebase} from '../../Firebase/FirebaseConfig';
 import Slider from '../../components/Slider';
 
 const HomeScreen = ({navigation}) => {
   //all states
-  const [indexCheck, setIndexCheck] = useState('0');
-  // const [active, setActive] = useState(true);
-  const [search, setSearch] = useState('');
 
+  const [indexCheck, setIndexCheck] = useState('0');
+  const [search, setSearch] = useState('');
   const [foodData, setFoodData] = useState([]);
   const [vegData, setVegData] = useState([]);
   const [nonVegData, setNonVegData] = useState([]);
@@ -39,10 +37,14 @@ const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={{marginRight: 10, padding: 10}}>
+        <Pressable
+          style={{marginRight: 10, padding: 10}}
+          onPress={() => {
+            navigation.navigate('AccountScreen');
+          }}>
           <Image
-            source={require('../../assets/menu.png')}
-            style={styles.headerIcon}
+            source={require('../../assets/maleUser.gif')}
+            style={{height: 40, width: 40}}
           />
         </Pressable>
         <View>
@@ -130,16 +132,42 @@ const HomeScreen = ({navigation}) => {
               showsHorizontalScrollIndicator={false}
               renderItem={({item, index}) => (
                 <TouchableOpacity
-                  onPress={() => setIndexCheck(index)}
+                  onPress={() => {
+                    setIndexCheck(index);
+                    navigation.navigate(
+                      'CategoryFoodScreen',
+                      item.foodCategory,
+                    );
+                  }}
                   style={
                     indexCheck === index
                       ? styles.categoryCard
                       : styles.categoryCardSelected
                   }>
-                  <Image
-                    source={require('../../assets/foodss.png')}
-                    style={{height: 60, width: 60}}
-                  />
+                  {item.foodCategory === 'chinese' && (
+                    <Image
+                      source={require('../../assets/chinese.png')}
+                      style={{height: 60, width: 60}}
+                    />
+                  )}
+                  {item.foodCategory === 'indian' && (
+                    <Image
+                      source={require('../../assets/indian.png')}
+                      style={{height: 60, width: 60}}
+                    />
+                  )}
+                  {item.foodCategory === 'japenese' && (
+                    <Image
+                      source={require('../../assets/sushi.png')}
+                      style={{height: 60, width: 60}}
+                    />
+                  )}
+                  {item.foodCategory === 'american' && (
+                    <Image
+                      source={require('../../assets/burger.png')}
+                      style={{height: 60, width: 60}}
+                    />
+                  )}
                   <Text
                     style={
                       indexCheck === index ? styles.cardText : styles.cardText1

@@ -14,7 +14,7 @@ import auth from '@react-native-firebase/auth';
 
 const CartScreen = ({navigation}) => {
   const [cartData, setCartData] = useState(null);
-  const [totalPrice, setTotalPrice] = useState('0');
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const getCartData = async () => {
     const docRef = await firebase
@@ -50,12 +50,11 @@ const CartScreen = ({navigation}) => {
       const food = JSON.parse(cartData).cart;
       let totalFoodPrice = 0;
       food.map(item => {
-        totalFoodPrice =
-          parseInt(item.data.foodPrice) * parseInt(item.data.foodQuantity) +
-          parseInt(item.data.AddOnPrice) * parseInt(item.data.AddOnQuantity) +
-          totalFoodPrice;
+        totalFoodPrice +=
+          item.data.foodPrice * item.foodQuantity +
+          item.addOnQuantity * item.data.foodAddOnPrice;
       });
-      setTotalPrice(JSON.stringify(totalFoodPrice));
+      setTotalPrice(totalFoodPrice);
     }
   }, [cartData]);
 

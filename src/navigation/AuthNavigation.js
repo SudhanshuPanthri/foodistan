@@ -8,6 +8,7 @@ import ItemDetailScreen from '../screens/ItemDetailScreen/ItemDetailScreen';
 import CartScreen from '../screens/CartScreen/CartScreen';
 import PlaceOrderScreen from '../screens/PlaceOrderScreen/PlaceOrderScreen';
 import OrderPlacedScreen from '../screens/OrderPlacedScreen/OrderPlacedScreen';
+import CategoryFoodScreen from '../screens/CategoryFoodScreen/CategoryFoodScreen';
 const AuthStackNavigator = createNativeStackNavigator();
 
 const AuthStack = () => {
@@ -30,6 +31,13 @@ const AuthStack = () => {
       <AuthStackNavigator.Screen
         name="SignupScreen"
         component={SignupScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <AuthStackNavigator.Screen
+        name="CategoryFoodScreen"
+        component={CategoryFoodScreen}
         options={{
           headerShown: false,
         }}
